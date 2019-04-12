@@ -42,7 +42,8 @@ set(SOURCE_FILES
         src/EmptyExtractor.cc
         src/EmptyMatcher.cc
         src/LBDFLoatOnlineExtractor.cpp
-        )
+        src/draw.cpp
+        include/lbd_mod_funcs.h src/lbd_mod_funcs.cpp)
 add_library(lbd_mod SHARED ${SOURCE_FILES})
 
 target_link_libraries(lbd_mod
@@ -54,3 +55,11 @@ target_link_libraries(lbd_mod
 
 
 add_executable(lbd_mod_test main.cpp)
+
+target_link_libraries(lbd_mod_test
+        lbd_mod
+        opencv_core
+        opencv_imgproc
+        opencv_highgui
+        opencv_imgcodecs
+        )
