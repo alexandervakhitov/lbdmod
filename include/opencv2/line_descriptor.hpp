@@ -39,10 +39,6 @@
  //
  //M*/
 
-// Copyright (c) 2018 Alexander Vakhitov <alexander.vakhitov@gmail.com>
-// Redistribution and use is allowed according to the terms of the 2-clause BSD license.
-
-
 #ifndef __OPENCV_LINE_DESCRIPTOR_HPP__
 #define __OPENCV_LINE_DESCRIPTOR_HPP__
 

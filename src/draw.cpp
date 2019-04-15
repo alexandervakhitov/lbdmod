@@ -43,100 +43,125 @@
 
 namespace cv
 {
-namespace line_descriptor
-{
+    namespace line_descriptor
+    {
 /* draw matches between two images */
-void drawLineMatches( const Mat& img1, const std::vector<KeyLine>& keylines1, const Mat& img2, const std::vector<KeyLine>& keylines2,
-                      const std::vector<DMatch>& matches1to2, Mat& outImg, const Scalar& matchColor, const Scalar& singleLineColor,
-                      const std::vector<char>& matchesMask, int flags )
-{
+        void drawLineMatches( const Mat& img1, const std::vector<KeyLine>& keylines1, const Mat& img2, const std::vector<KeyLine>& keylines2,
+                              const std::vector<DMatch>& matches1to2, Mat& outImg, bool is_vertical, const Scalar& matchColor, const Scalar& singleLineColor,
+                              const std::vector<char>& matchesMask, int flags )
+        {
 
-  if(img1.type() != img2.type())
-  {
-    std::cout << "Input images have different types" << std::endl;
-    CV_Assert(img1.type() == img2.type());
-  }
+            if(img1.type() != img2.type())
+            {
+                std::cout << "Input images have different types" << std::endl;
+                CV_Assert(img1.type() == img2.type());
+            }
 
-  /* initialize output matrix (if necessary) */
-  if( flags == DrawLinesMatchesFlags::DEFAULT )
-  {
-    /* check how many rows are necessary for output matrix */
-    int totalRows = img1.rows >= img2.rows ? img1.rows : img2.rows;
+            /* initialize output matrix (if necessary) */
+            if( flags == DrawLinesMatchesFlags::DEFAULT )
+            {
+                /* check how many rows are necessary for output matrix */
 
-    /* initialize output matrix */
-    outImg = Mat::zeros( totalRows, img1.cols + img2.cols, img1.type() );
 
-  }
+                /* initialize output matrix */
+                if (is_vertical)
+                {
+                    int totalCols = img1.cols >= img2.cols ? img1.cols : img2.cols;
+                    outImg = Mat::zeros(img1.rows + img2.rows , totalCols, img1.type() );
+                } else {
+                    int totalRows = img1.rows >= img2.rows ? img1.rows : img2.rows;
+                    outImg = Mat::zeros( totalRows, img1.cols + img2.cols, img1.type() );
+                }
 
-  /* initialize random seed: */
-  srand( (unsigned int) time( NULL ) );
 
-  Scalar singleLineColorRGB;
-  if( singleLineColor == Scalar::all( -1 ) )
-  {
-    int R = ( rand() % (int) ( 255 + 1 ) );
-    int G = ( rand() % (int) ( 255 + 1 ) );
-    int B = ( rand() % (int) ( 255 + 1 ) );
+            }
 
-    singleLineColorRGB = Scalar( R, G, B );
-  }
+            /* initialize random seed: */
+            srand( (unsigned int) time( NULL ) );
 
-  else
-    singleLineColorRGB = singleLineColor;
+            Scalar singleLineColorRGB;
+            if( singleLineColor == Scalar::all( -1 ) )
+            {
+                int R = ( rand() % (int) ( 255 + 1 ) );
+                int G = ( rand() % (int) ( 255 + 1 ) );
+                int B = ( rand() % (int) ( 255 + 1 ) );
 
-  /* copy input images to output images */
-  Mat roi_left( outImg, Rect( 0, 0, img1.cols, img1.rows ) );
-  Mat roi_right( outImg, Rect( img1.cols, 0, img2.cols, img2.rows ) );
-  img1.copyTo( roi_left );
-  img2.copyTo( roi_right );
+                singleLineColorRGB = Scalar( R, G, B );
+            }
 
-  /* get columns offset */
-  int offset = img1.cols;
+            else
+                singleLineColorRGB = singleLineColor;
 
-  /* if requested, draw lines from both images */
-  if( flags != DrawLinesMatchesFlags::NOT_DRAW_SINGLE_LINES )
-  {
-    for ( size_t i = 0; i < keylines1.size(); i++ )
-    {
-      KeyLine k1 = keylines1[i];
-      //line( outImg, Point2f( k1.startPointX, k1.startPointY ), Point2f( k1.endPointX, k1.endPointY ), singleLineColorRGB, 2 );
-      line( outImg, Point2f( k1.sPointInOctaveX, k1.sPointInOctaveY ), Point2f( k1.ePointInOctaveX, k1.ePointInOctaveY ), singleLineColorRGB, 2 );
+            /* copy input images to output images */
+            Mat roi_left( outImg, Rect( 0, 0, img1.cols, img1.rows ) );
 
-    }
+            img1.copyTo( roi_left );
+            Mat roi_right;
+            if (is_vertical)
+            {
+                roi_right = Mat( outImg, Rect( 0, img1.rows, img2.cols, img2.rows ) );
+            } else {
+                roi_right = Mat( outImg, Rect( img1.cols, 0, img2.cols, img2.rows ) );
+            }
+            img2.copyTo( roi_right );
 
-    for ( size_t j = 0; j < keylines2.size(); j++ )
-    {
-      KeyLine k2 = keylines2[j];
-      line( outImg, Point2f( k2.sPointInOctaveX + offset, k2.sPointInOctaveY ), Point2f( k2.ePointInOctaveX + offset, k2.ePointInOctaveY ), singleLineColorRGB, 2 );
-    }
-  }
+            /* get columns offset */
+            int v_offset, h_offset;
+            if (is_vertical)
+            {
+                h_offset = 0;
+                v_offset = img1.rows;
+            } else {
+                v_offset = 0;
+                h_offset = img1.cols;
+            }
 
-  /* draw matches */
-  for ( size_t counter = 0; counter < matches1to2.size(); counter++ )
-  {
-    if( matchesMask[counter] != 0 )
-    {
-      DMatch dm = matches1to2[counter];
-      KeyLine left = keylines1[dm.queryIdx];
-      KeyLine right = keylines2[dm.trainIdx];
 
-      Scalar matchColorRGB;
-      if( matchColor == Scalar::all( -1 ) )
-      {
-        int R = ( rand() % (int) ( 255 + 1 ) );
-        int G = ( rand() % (int) ( 255 + 1 ) );
-        int B = ( rand() % (int) ( 255 + 1 ) );
+            /* if requested, draw lines from both images */
+            if( flags != DrawLinesMatchesFlags::NOT_DRAW_SINGLE_LINES )
+            {
+                for ( size_t i = 0; i < keylines1.size(); i++ )
+                {
+                    KeyLine k1 = keylines1[i];
+                    //line( outImg, Point2f( k1.startPointX, k1.startPointY ), Point2f( k1.endPointX, k1.endPointY ), singleLineColorRGB, 2 );
+                    line( outImg, Point2f( k1.startPointX, k1.startPointY ), Point2f( k1.endPointX, k1.endPointY ), singleLineColorRGB, 2 );
 
-        matchColorRGB = Scalar( R, G, B );
+                }
 
-        if( singleLineColor == Scalar::all( -1 ) )
-          singleLineColorRGB = matchColorRGB;
-      }
+                for ( size_t j = 0; j < keylines2.size(); j++ )
+                {
+                    KeyLine k2 = keylines2[j];
+                    line( outImg, Point2f( k2.startPointX + h_offset, k2.startPointY +v_offset),
+                          Point2f( k2.endPointX + h_offset, k2.endPointY + v_offset), singleLineColorRGB, 2 );
+                }
+            }
 
-      else
-        matchColorRGB = matchColor;
+            /* draw matches */
+            for ( size_t counter = 0; counter < matches1to2.size(); counter++ )
+            {
+                if( matchesMask.size() == 0 || matchesMask[counter] != 0 )
+                {
+                    DMatch dm = matches1to2[counter];
+                    KeyLine left = keylines1[dm.queryIdx];
+                    KeyLine right = keylines2[dm.trainIdx];
 
-      /* draw lines if necessary */
+                    Scalar matchColorRGB;
+                    if( matchColor == Scalar::all( -1 ) )
+                    {
+                        int R = ( rand() % (int) ( 255 + 1 ) );
+                        int G = ( rand() % (int) ( 255 + 1 ) );
+                        int B = ( rand() % (int) ( 255 + 1 ) );
+
+                        matchColorRGB = Scalar( R, G, B );
+
+                        if( singleLineColor == Scalar::all( -1 ) )
+                            singleLineColorRGB = matchColorRGB;
+                    }
+
+                    else
+                        matchColorRGB = matchColor;
+
+                    /* draw lines if necessary */
 //      line( outImg, Point2f( left.startPointX, left.startPointY ), Point2f( left.endPointX, left.endPointY ), singleLineColorRGB, 2 );
 //
 //      line( outImg, Point2f( right.startPointX + offset, right.startPointY ), Point2f( right.endPointX + offset, right.endPointY ), singleLineColorRGB,
@@ -145,46 +170,48 @@ void drawLineMatches( const Mat& img1, const std::vector<KeyLine>& keylines1, co
 //      /* link correspondent lines */
 //      line( outImg, Point2f( left.startPointX, left.startPointY ), Point2f( right.startPointX + offset, right.startPointY ), matchColorRGB, 1 );
 
-      line( outImg, Point2f( left.sPointInOctaveX, left.sPointInOctaveY ), Point2f( left.ePointInOctaveX, left.ePointInOctaveY ), singleLineColorRGB, 2 );
+                    line( outImg, Point2f( left.startPointX, left.startPointY ), Point2f( left.endPointX, left.endPointY ), singleLineColorRGB, 2 );
 
-        line( outImg, Point2f( right.sPointInOctaveX + offset, right.sPointInOctaveY ), Point2f( right.ePointInOctaveX + offset, right.ePointInOctaveY ), singleLineColorRGB,
-              2 );
+                    line( outImg, Point2f( right.startPointX + h_offset, right.startPointY +v_offset),
+                          Point2f( right.endPointX + h_offset, right.endPointY+v_offset ), singleLineColorRGB,
+                          2 );
 
-        /* link correspondent lines */
-        line( outImg, Point2f( left.sPointInOctaveX, left.sPointInOctaveY ), Point2f( right.sPointInOctaveX + offset, right.sPointInOctaveY ), matchColorRGB, 1 );
-    }
-  }
-}
+                    /* link correspondent lines */
+                    line( outImg, Point2f( left.startPointX, left.startPointY),
+                          Point2f( right.endPointX + h_offset, right.endPointY+v_offset), matchColorRGB, 1 );
+                }
+            }
+        }
 
 /* draw extracted lines on original image */
-void drawKeylines( const Mat& image, const std::vector<KeyLine>& keylines, Mat& outImage, const Scalar& color, int flags )
-{
-  if( flags == DrawLinesMatchesFlags::DEFAULT )
-    outImage = image.clone();
+        void drawKeylines( const Mat& image, const std::vector<KeyLine>& keylines, Mat& outImage, const Scalar& color, int flags )
+        {
+            if( flags == DrawLinesMatchesFlags::DEFAULT )
+                outImage = image.clone();
 
-  for ( size_t i = 0; i < keylines.size(); i++ )
-  {
-    /* decide lines' color  */
-    Scalar lineColor;
-    if( color == Scalar::all( -1 ) )
-    {
-      int R = ( rand() % (int) ( 255 + 1 ) );
-      int G = ( rand() % (int) ( 255 + 1 ) );
-      int B = ( rand() % (int) ( 255 + 1 ) );
+            for ( size_t i = 0; i < keylines.size(); i++ )
+            {
+                /* decide lines' color  */
+                Scalar lineColor;
+                if( color == Scalar::all( -1 ) )
+                {
+                    int R = ( rand() % (int) ( 255 + 1 ) );
+                    int G = ( rand() % (int) ( 255 + 1 ) );
+                    int B = ( rand() % (int) ( 255 + 1 ) );
 
-      lineColor = Scalar( R, G, B );
+                    lineColor = Scalar( R, G, B );
+                }
+
+                else
+                    lineColor = color;
+
+                /* get line */
+                KeyLine k = keylines[i];
+
+                /* draw line */
+                line( outImage, Point2f( k.startPointX, k.startPointY ), Point2f( k.endPointX, k.endPointY ), lineColor, 1 );
+            }
+        }
+
     }
-
-    else
-      lineColor = color;
-
-    /* get line */
-    KeyLine k = keylines[i];
-
-    /* draw line */
-    line( outImage, Point2f( k.startPointX, k.startPointY ), Point2f( k.endPointX, k.endPointY ), lineColor, 1 );
-  }
-}
-
-}
 }

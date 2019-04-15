@@ -38,8 +38,6 @@
  // the use of this software, even if advised of the possibility of such damage.
  //
  //M*/
-// Copyright (c) 2018 Alexander Vakhitov <alexander.vakhitov@gmail.com>
-// Redistribution and use is allowed according to the terms of the 2-clause BSD license.
 
 #ifndef __OPENCV_DESCRIPTOR_HPP__
 #define __OPENCV_DESCRIPTOR_HPP__
@@ -1358,7 +1356,7 @@ NOT_DRAW_SINGLE_LINES = 2//!< Single keylines will not be drawn.
 matched lines and line connecting them with same color
  */
 CV_EXPORTS void drawLineMatches( const Mat& img1, const std::vector<KeyLine>& keylines1, const Mat& img2, const std::vector<KeyLine>& keylines2,
-                                 const std::vector<DMatch>& matches1to2, Mat& outImg, const Scalar& matchColor = Scalar::all( -1 ),
+                                 const std::vector<DMatch>& matches1to2, Mat& outImg, bool is_vertical=false, const Scalar& matchColor = Scalar::all( -1 ),
                                  const Scalar& singleLineColor = Scalar::all( -1 ), const std::vector<char>& matchesMask = std::vector<char>(),
                                  int flags = DrawLinesMatchesFlags::DEFAULT );
 

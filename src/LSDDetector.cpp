@@ -38,8 +38,7 @@
  // the use of this software, even if advised of the possibility of such damage.
  //
  //M*/
-// Copyright (c) 2018 Alexander Vakhitov <alexander.vakhitov@gmail.com>
-// Redistribution and use is allowed according to the terms of the 2-clause BSD license.
+
 #include "precomp.hpp"
 
 //using namespace cv;

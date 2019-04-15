@@ -1,5 +1,6 @@
-// Copyright (c) 2018 Alexander Vakhitov <alexander.vakhitov@gmail.com>
-// Redistribution and use is allowed according to the terms of the 2-clause BSD license.
+//
+// Created by alexander on 24.08.18.
+//
 
 #ifndef ORB_SLAM2_EMPTYEXTRACTOR_H
 #define ORB_SLAM2_EMPTYEXTRACTOR_H

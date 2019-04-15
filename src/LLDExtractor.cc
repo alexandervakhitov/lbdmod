@@ -1,5 +1,6 @@
-// Copyright (c) 2018 Alexander Vakhitov <alexander.vakhitov@gmail.com>
-// Redistribution and use is allowed according to the terms of the 2-clause BSD license.
+//
+// Created by alexander on 23.08.18.
+//
 
 #include <fstream>
 #include <opencv2/core/mat.hpp>

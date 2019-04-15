@@ -1,6 +1,8 @@
-// Copyright (c) 2018 Alexander Vakhitov <alexander.vakhitov@gmail.com>
-// Redistribution and use is allowed according to the terms of the 2-clause BSD license.
+//
+// Created by alexander on 04.09.18.
+//
 
+//#include <Eigen/Dense>
 #include "LBDFLoatOnlineExtractor.h"
 
 LBDFLoatOnlineExtractor::LBDFLoatOnlineExtractor()
