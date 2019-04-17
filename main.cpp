@@ -4,12 +4,17 @@
 
 int main()
 {
+
+    cv::Mat imaget = cv::imread("/home/vakhitov/projects/lld/test.png");
+    cv::Mat dxImg_;
+    cv::Sobel( imaget, dxImg_, CV_16SC1, 1, 0, 3 );
+
     bool is_simultaneous = false;
+    bool is_highgui = false;
     std::cout << "Hello, World!" << std::endl;
 
-    cv::Mat image;
-    image = cv::imread("/home/alexander/materials/sego/kitti_odometry/dataset/sequences/00/image_0/000000.png", 0);
-    cv::Mat image2 = cv::imread("/home/alexander/materials/sego/kitti_odometry/dataset/sequences/00/image_0/000001.png", 0);
+    cv::Mat image = cv::imread("/storage/kitti/dataset/sequences/00/image_0/000000.png", 0);
+    cv::Mat image2 = cv::imread("/storage/kitti/dataset/sequences/00/image_0/000001.png", 0);
     cv::line_descriptor::BinaryDescriptor::Params p;
     int n_octaves = 8;
     p.numOfOctave_ = n_octaves;
@@ -48,7 +53,9 @@ int main()
     cv::Mat debugDetector, imageColor;
     cv::cvtColor(image, imageColor, CV_GRAY2BGR);
     cv::line_descriptor::drawKeylines(imageColor, lines, debugDetector);
-    cv::imshow("detect 1", debugDetector);
+
+    if (is_highgui)
+        cv::imshow("detect 1", debugDetector);
 
 //        bd->compute(image, *lines_p, descs);
     std::cout << " full done " << dt << std::endl;
@@ -95,7 +102,9 @@ int main()
     cv::Mat debugDetector2, imageColor2;
     cv::cvtColor(image2, imageColor2, CV_GRAY2BGR);
     cv::line_descriptor::drawKeylines(imageColor2, lines2, debugDetector2);
-    cv::imshow("detect 2", debugDetector2);
+
+    if (is_highgui)
+        cv::imshow("detect 2", debugDetector2);
 
 
     cv::line_descriptor::BinaryDescriptorMatcher matcher;
@@ -104,10 +113,13 @@ int main()
     cv::Mat debugMatchingImg;
     bool is_vertical = true;
     cv::line_descriptor::drawLineMatches(imageColor2, lines2, imageColor, lines, matches, debugMatchingImg, true);
-    cv::imshow("Matching", debugMatchingImg);
+    cv::imwrite("test.png", debugMatchingImg);
 
-
-    cv::waitKey();
+    if (is_highgui)
+    {
+        cv::imshow("Matching", debugMatchingImg);
+        cv::waitKey();
+    }
 
     return 0;
 }

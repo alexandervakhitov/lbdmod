@@ -509,9 +509,13 @@ void BinaryDescriptor::detectImpl( const Mat& imageSrc, std::vector<KeyLine>& ke
   /* create a pointer to self */
   BinaryDescriptor *bn = const_cast<BinaryDescriptor*>( this );
 
+//  std::cout << " before oct kl " << std::endl;
+
   /* detect and arrange lines across octaves */
   ScaleLines sl;
   bn->OctaveKeyLines( image, sl );
+
+//  std::cout << " after oct kl " << std::endl;
 
   /* fill KeyLines vector */
   for ( int i = 0; i < (int) sl.size(); i++ )
@@ -764,6 +768,8 @@ int BinaryDescriptor::OctaveKeyLines( cv::Mat& image, ScaleLines &keyLines )
   double factor = params.factor;//sqrt( 2.0 );  //the down sample factor between connective two octave images
   double factor2 = factor*factor;
 
+//  std::cout << " we need " << params.numOfOctave_ << " octs " << images_sizes.size() << std::endl;
+
   /* loop over number of octaves */
   for ( int octaveCount = 0; octaveCount < params.numOfOctave_; octaveCount++ )
   {
@@ -773,6 +779,8 @@ int BinaryDescriptor::OctaveKeyLines( cv::Mat& image, ScaleLines &keyLines )
     /* apply Gaussian blur */
     float increaseSigma = sqrt( curSigma2 - preSigma2 );
     cv::GaussianBlur( image, blur, cv::Size( params.ksize_, params.ksize_ ), increaseSigma );
+
+//    std::cout << " blur done " << std::endl;
 
     if (octaveCount >= images_sizes.size() || octaveCount >= edLineVec_.size())
     {
@@ -800,6 +808,7 @@ int BinaryDescriptor::OctaveKeyLines( cv::Mat& image, ScaleLines &keyLines )
 
   } /* end of loop over number of octaves */
 
+//  std::cout << " octave created " << std::endl;
 //  return 0;
 
   /* prepare a vector to store octave information associated to extracted lines */
@@ -837,6 +846,8 @@ int BinaryDescriptor::OctaveKeyLines( cv::Mat& image, ScaleLines &keyLines )
     numOfFinalLine++;
     lineIDInScaleLineVec++;
   }
+
+//  std::cout << " octave 0 done " << std::endl;
 
   /* create and fill an array to store scale factors */
   float *scale = new float[params.numOfOctave_];
@@ -1548,6 +1559,7 @@ BinaryDescriptor::EDLineDetector::~EDLineDetector()
 
 int BinaryDescriptor::EDLineDetector::EdgeDrawing( cv::Mat &image, EdgeChains &edgeChains )
 {
+
   imageWidth = image.cols;
   imageHeight = image.rows;
   unsigned int pixelNum = imageWidth * imageHeight;
@@ -1555,10 +1567,13 @@ int BinaryDescriptor::EDLineDetector::EdgeDrawing( cv::Mat &image, EdgeChains &e
   unsigned int edgePixelArraySize = pixelNum / 5;
   unsigned int maxNumOfEdge = edgePixelArraySize / 20;
   //compute dx, dy images
+//  std::cout << " before dx dy " << std::endl;
   if( gImg_.cols != (int) imageWidth || gImg_.rows != (int) imageHeight )
   {
+//      std::cout << " inside gImg init " << std::endl;
     if( pFirstPartEdgeX_ != NULL )
     {
+//        std::cout << " inside deleter 2 " << std::endl;
       delete[] pFirstPartEdgeX_;
       delete[] pFirstPartEdgeY_;
       delete[] pSecondPartEdgeX_;
@@ -1585,19 +1600,31 @@ int BinaryDescriptor::EDLineDetector::EdgeDrawing( cv::Mat &image, EdgeChains &e
     pAnchorX_ = new unsigned int[edgePixelArraySize];
     pAnchorY_ = new unsigned int[edgePixelArraySize];
   }
+
+//  std::cout << " before sobel " << image.size << " " << dxImg_.size << " " << dyImg_.size << std::endl;
+//    cv::imwrite("/home/vakhitov/projects/lld/test.png", image);
   cv::Sobel( image, dxImg_, CV_16SC1, 1, 0, 3 );
   cv::Sobel( image, dyImg_, CV_16SC1, 0, 1, 3 );
 
   //compute gradient and direction images
+
+//    std::cout << " before add " << dxImg_ .cols << " " << dxImg_ .rows  << " " << dyImg_.cols << " " << dyImg_ .size << std::endl;
+
   cv::Mat dxABS_m = cv::abs( dxImg_ );
   cv::Mat dyABS_m = cv::abs( dyImg_ );
   cv::Mat sumDxDy;
   cv::add( dyABS_m, dxABS_m, sumDxDy );
 
+//    std::cout << " before thr " << std::endl;
+
   cv::threshold( sumDxDy, gImg_, gradienThreshold_ + 1, 255, cv::THRESH_TOZERO );
   gImg_ = gImg_ / 4;
   gImgWO_ = sumDxDy / 4;
   cv::compare( dxABS_m, dyABS_m, dirImg_, cv::CMP_LT );
+
+//  std::cout << " after sobel thr " << std::endl;
+
+//  return -1;
 
   short *pgImg = gImg_.ptr<short>();
   unsigned char *pdirImg = dirImg_.ptr();
@@ -1676,6 +1703,9 @@ int BinaryDescriptor::EDLineDetector::EdgeDrawing( cv::Mat &image, EdgeChains &e
     {       //if anchor i is already been an edge pixel.
       continue;
     }
+
+//    std::cout << " before smart routing " << std::endl;
+
     /*The walk stops under 3 conditions:
      * 1. We move out of the edge areas, i.e., the thresholded gradient value
      *    of the current pixel is 0.
@@ -2364,12 +2394,19 @@ int BinaryDescriptor::EDLineDetector::EDline( cv::Mat &image, LineChains &lines 
 {
 
   //first, call EdgeDrawing function to extract edges
+
+//    std::cout << " before edge drawing " << image.rows << " " << image.cols << std::endl;
+
   EdgeChains edges;
   if( ( EdgeDrawing( image, edges ) ) != 1 )
   {
     std::cout << "Line Detection not finished" << std::endl;
     return -1;
   }
+
+//  std::cout << " edge drawing done " << std::endl;
+
+//  return 0;
 
   //detect lines
   unsigned int linePixelID = edges.sId.at(edges.numOfEdges);
@@ -2623,7 +2660,7 @@ int BinaryDescriptor::EDLineDetector::EDline( cv::Mat &image, LineChains &lines 
       //Extract line segments from the remaining pixel; Current chain has been shortened already.
     }
   }         //end for(unsigned int edgeID=0; edgeID<edges.numOfEdges; edgeID++)
-    std::cout << pLineSID.size() << " " << numOfLines << std::endl;
+//    std::cout << pLineSID.size() << " " << numOfLines << std::endl;
     if (numOfLines < pLineSID.size()) {
         pLineSID[numOfLines] = offsetInLineArray;
     } 

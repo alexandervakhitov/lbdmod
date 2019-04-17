@@ -6,6 +6,7 @@
 
 void DetectEDLines(const cv::Mat& image, int n_octaves, double factor, std::vector<cv::line_descriptor::KeyLine>* detections_p)
 {
+//    std::cout << " detect started " << std::endl;
     cv::line_descriptor::BinaryDescriptor::Params p;
     p.numOfOctave_ = n_octaves;
     p.widthOfBand_ = 7;
