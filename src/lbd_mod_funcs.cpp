@@ -1,12 +1,27 @@
-//
-// Created by alexander on 10.04.19.
-//
+/**
+* This file is part of LLD-SLAM.
+*
+* Copyright (C) 2018 Alexander Vakhitov <alexander.vakhitov at gmail dot com> (Skoltech)
+* For more information see <https://github.com/alexandervakhitov/lld-slam>
+*
+* lld-slam is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* lld-slam is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with LLD-SLAM. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #include "lbd_mod_funcs.h"
 
 void DetectEDLines(const cv::Mat& image, int n_octaves, double factor, std::vector<cv::line_descriptor::KeyLine>* detections_p)
 {
-//    std::cout << " detect started " << std::endl;
     cv::line_descriptor::BinaryDescriptor::Params p;
     p.numOfOctave_ = n_octaves;
     p.widthOfBand_ = 7;
@@ -25,12 +40,6 @@ void DetectComputeLBD(const cv::Mat& image, int n_octaves, double factor, std::v
     p.ksize_ = 5;
     p.factor = factor;
     cv::Ptr<cv::line_descriptor::BinaryDescriptor> bd = cv::line_descriptor::BinaryDescriptor::createBinaryDescriptor(p);
-//    std::cout << "got " << detections.size() << " detections " << std::endl;
-//    std::cout << " zero det: " << detections[0].startPointX << " " << detections[0].startPointY << " " << detections[0].endPointX << " " << detections[0].endPointY << std::endl;
-//    std::cout << " zero det size: " << detections[0].size << std::endl;
-//    int n = detections.size()-1;
-//    std::cout << " n det: " << detections[n].startPointX << " " << detections[n].startPointY << " " << detections[n].endPointX << " " << detections[n].endPointY << std::endl;
-//    std::cout << " n det size: " << detections[n].size << std::endl;
     (*bd)(image, cv::Mat(), *detections_p, *descs_p, false, false);
 }
 
@@ -42,12 +51,6 @@ void ComputeLBD(const cv::Mat& image, int n_octaves, double factor, std::vector<
     p.ksize_ = 5;
     p.factor = factor;
     cv::Ptr<cv::line_descriptor::BinaryDescriptor> bd = cv::line_descriptor::BinaryDescriptor::createBinaryDescriptor(p);
-//    std::cout << "got " << detections.size() << " detections " << std::endl;
-//    std::cout << " zero det: " << detections[0].startPointX << " " << detections[0].startPointY << " " << detections[0].endPointX << " " << detections[0].endPointY << std::endl;
-//    std::cout << " zero det size: " << detections[0].size << std::endl;
-//    int n = detections.size()-1;
-//    std::cout << " n det: " << detections[n].startPointX << " " << detections[n].startPointY << " " << detections[n].endPointX << " " << detections[n].endPointY << std::endl;
-//    std::cout << " n det size: " << detections[n].size << std::endl;
     bd->compute(image, detections_p, *descs_p, false);
 }
 

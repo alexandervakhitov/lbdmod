@@ -37,6 +37,7 @@
  // or tort (including negligence or otherwise) arising in any way out of
  // the use of this software, even if advised of the possibility of such damage.
  //
+ // Modified by Alexander Vakhitov (2018): vertical drawing mode
  //M*/
 
 #include "precomp.hpp"
