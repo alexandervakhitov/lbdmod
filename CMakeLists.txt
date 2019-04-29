@@ -31,7 +31,7 @@ set(PYTHON_EXECUTABLE "python")
 set(PYTHON_PACKAGES_PATH "/home/vakhitov/anaconda3/envs/lld/lib/python2.7/site-packages/")
 #=============== Find Packages ====================================
 ## OpenCV
-find_package(OpenCV COMPONENTS core imgproc highgui REQUIRED)
+find_package(OpenCV COMPONENTS core imgproc highgui imgcodecs REQUIRED)
 ## Boost
 if(CMAKE_CXX_COMPILER_ID MATCHES MSVC)
     # Provisions for typical Boost compiled on Windows
