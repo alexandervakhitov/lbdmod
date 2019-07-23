@@ -25,16 +25,11 @@
 int main()
 {
 
-    cv::Mat imaget = cv::imread("/home/vakhitov/projects/lld/test.png");
-    cv::Mat dxImg_;
-    cv::Sobel( imaget, dxImg_, CV_16SC1, 1, 0, 3 );
-
     bool is_simultaneous = false;
     bool is_highgui = false;
-    std::cout << "Hello, World!" << std::endl;
 
-    cv::Mat image = cv::imread("/storage/kitti/dataset/sequences/00/image_0/000000.png", 0);
-    cv::Mat image2 = cv::imread("/storage/kitti/dataset/sequences/00/image_0/000001.png", 0);
+    cv::Mat image = cv::imread("test_imgs/000000.png", 0);
+    cv::Mat image2 = cv::imread("test_imgs/000001.png", 0);
     cv::line_descriptor::BinaryDescriptor::Params p;
     int n_octaves = 8;
     p.numOfOctave_ = n_octaves;
