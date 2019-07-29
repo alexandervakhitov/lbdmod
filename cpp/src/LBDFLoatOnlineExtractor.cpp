@@ -18,7 +18,7 @@
 * along with LLD-SLAM. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "LBDFLoatOnlineExtractor.h"
+#include "../include/LBDFLoatOnlineExtractor.h"
 
 LBDFLoatOnlineExtractor::LBDFLoatOnlineExtractor()
 {

@@ -18,7 +18,7 @@
 * along with LLD-SLAM. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "LBDFloatExtractor.h"
+#include "../include/LBDFloatExtractor.h"
 
 LBDFloatExtractor::LBDFloatExtractor(const std::string &strDetections, const std::string &strDescriptors, bool isLeft, bool isTest ) :
         StoredLineExtractor(strDetections, isLeft, isTest), strDescriptorsStorage(strDescriptors)

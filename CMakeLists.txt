@@ -28,7 +28,7 @@ set(PYTHON_INCLUDE_DIR "/usr/include/python2.7/")
 set(PYTHON_NUMPY_INCLUDE_DIRS "/usr/local/lib/python2.7/dist-packages/numpy/core/include/")
 set(PYTHON_LIBRARY "python2.7")
 set(PYTHON_EXECUTABLE "python")
-set(PYTHON_PACKAGES_PATH "/usr/local/lib/python2.7/dist-packages/numpy/")
+set(PYTHON_PACKAGES_PATH "/usr/local/lib/python2.7/dist-packages/")
 #=============== Find Packages ====================================
 ## OpenCV
 find_package(OpenCV COMPONENTS core imgproc highgui imgcodecs REQUIRED)
@@ -49,29 +49,31 @@ if(NOT Boost_FOUND)
     find_package(Boost COMPONENTS python-py${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR} REQUIRED)
 endif()
 
-include_directories(./include)
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
 file(GLOB lbdlib_sources
-        src/binary_descriptor.cpp
-        src/binary_descriptor_matcher.cpp
-        src/LSDDetector.cpp
-        src/LineExtractor.cc
-        src/LinesConfigurator.cc
-        src/LBDFloatLineMatcher.cc
-        src/LLDLineMatcher.cc
-        src/LBDFloatExtractor.cc
-        src/LLDExtractor.cc
-        src/StoredLineExtractor.cc
-        src/EmptyExtractor.cc
-        src/EmptyMatcher.cc
-        src/LBDFLoatOnlineExtractor.cpp
-        src/draw.cpp
-        src/lbd_mod_funcs.cpp)
+        cpp/src/binary_descriptor.cpp
+        cpp/src/binary_descriptor_matcher.cpp
+        cpp/src/LSDDetector.cpp
+        cpp/src/LineExtractor.cc
+        cpp/src/LinesConfigurator.cc
+        cpp/src/LBDFloatLineMatcher.cc
+        cpp/src/LLDLineMatcher.cc
+        cpp/src/LBDFloatExtractor.cc
+        cpp/src/LLDExtractor.cc
+        cpp/src/StoredLineExtractor.cc
+        cpp/src/EmptyExtractor.cc
+        cpp/src/EmptyMatcher.cc
+        cpp/src/LBDFLoatOnlineExtractor.cpp
+        cpp/src/draw.cpp
+        cpp/src/lbd_mod_funcs.cpp)
 
 add_library(lbd_mod SHARED ${lbdlib_sources})
 
 target_link_libraries(lbd_mod
         ${OpenCV_LIBRARIES})
+
+target_include_directories(lbd_mod PUBLIC cpp/include)
 
 add_executable(lbd_mod_test main.cpp)
 
@@ -94,11 +96,11 @@ endif()
 
 set(PYPROJECT_NAME pylbd)
 
-file(GLOB project_sources src/pyboost_cv2_converter.cpp src/pyboost_cv3_converter.cpp src/pyboost_cv4_converter.cpp src/python_module.cpp src/dataconv.cpp )
+file(GLOB project_sources cpp/src/pyboost_cv2_converter.cpp cpp/src/pyboost_cv3_converter.cpp cpp/src/pyboost_cv4_converter.cpp cpp/src/python_module.cpp cpp/src/dataconv.cpp)
 
 add_library(pylbd SHARED ${project_sources} ${lbdlib_sources})
 target_include_directories(${PYPROJECT_NAME} PUBLIC
-        "${CMAKE_CURRENT_SOURCE_DIR}/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/cpp/include"
         ${Boost_INCLUDE_DIRS}
         ${OpenCV_INCLUDE_DIRS}
         ${PYTHON_INCLUDE_DIRS}

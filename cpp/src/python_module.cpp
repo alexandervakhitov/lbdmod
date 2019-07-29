@@ -2,8 +2,8 @@
 
 #include <boost/python.hpp>
 #include "pyboostcvconverter/pyboostcvconverter.hpp"
-#include "lbd_mod_funcs.h"
-#include "dataconv.h"
+#include "../include/lbd_mod_funcs.h"
+#include "../include/dataconv.h"
 
 namespace pylbd {
 

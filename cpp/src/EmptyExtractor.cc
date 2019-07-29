@@ -18,8 +18,22 @@
 * along with LLD-SLAM. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "EmptyMatcher.h"
+#include "../include/EmptyExtractor.h"
 
-double EmptyMatcher::MatchLineDescriptors(const cv::Mat &desc1, const cv::Mat &desc2) {
-    return 1;
+EmptyExtractor::EmptyExtractor()
+{
+
+}
+
+void EmptyExtractor::ExtractDescriptors(const cv::Mat& frame, std::vector<KeyLine> &keyLines, cv::Mat *lineDescs) {
+
+}
+
+void EmptyExtractor::ExtractDetections(const cv::Mat& frame, std::vector<KeyLine> *extrLines) {
+
+}
+
+void EmptyExtractor::ExtractLines(const cv::Mat& frame, std::vector<KeyLine>* extrLines, cv::Mat* lineDescs)
+{
+
 }

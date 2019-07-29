@@ -18,15 +18,20 @@
 * along with LLD-SLAM. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <fstream>
-#include <opencv2/core/mat.hpp>
-#include "LLDExtractor.h"
+#ifndef ORB_SLAM2_LINESCONFIGURATOR_H
+#define ORB_SLAM2_LINESCONFIGURATOR_H
 
-LLDExtractor::LLDExtractor(const std::string &strDetections, const std::string &strDescriptors, bool isLeft, bool isTest) :
-        StoredLineExtractor(strDetections, isLeft, isTest), strDescriptorsStorage(strDescriptors)
-{}
+#include "opencv2/line_descriptor.hpp"
+#include "LineExtractor.h"
+#include "LineMatcher.h"
+#include "StoredLineExtractor.h"
 
-void LLDExtractor::ExtractDescriptors(const cv::Mat& frame, std::vector<KeyLine> &extrLines, cv::Mat *lineDescs)
+class LinesConfigurator
 {
-    ReadTXTDescriptors(extrLines, strDescriptorsStorage, lineDescs);
-}
+public:
+    static StoredLineExtractor* CreateLineExtractor(const std::string& strSettings, bool isLeft);
+    static LineMatcher* CreateLineMatcher(const cv::FileStorage& settings);
+};
+
+
+#endif //ORB_SLAM2_LINESCONFIGURATOR_H

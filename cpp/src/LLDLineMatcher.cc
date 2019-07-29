@@ -18,14 +18,10 @@
 * along with LLD-SLAM. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef PYLBD_DATACONV_H
-#define PYLBD_DATACONV_H
+#include "../include/LLDLineMatcher.h"
 
-#include <opencv2/line_descriptor.hpp>
+LLDLineMatcher::LLDLineMatcher() {};
 
-cv::Mat ConvertKeyLines2Mat(const std::vector<cv::line_descriptor::KeyLine>& detections);
-std::vector<cv::line_descriptor::KeyLine> ConvertMat2KeyLines(const cv::Mat& lines_data);
-cv::Mat ConvertMatches2Mat(const std::vector<cv::DMatch>& matchingVec);
-std::vector<cv::DMatch> ConvertMat2Matches(const cv::Mat& matchMat);
-
-#endif //PYLBD_DATACONV_H
+double LLDLineMatcher::MatchLineDescriptors(const cv::Mat &desc1, const cv::Mat &desc2) {
+    return 2.0 - desc1.dot(desc2);
+}

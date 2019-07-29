@@ -18,10 +18,24 @@
 * along with LLD-SLAM. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "LineExtractor.h"
+#ifndef ORB_SLAM2_LINEEXTRACTOR_H
+#define ORB_SLAM2_LINEEXTRACTOR_H
 
-void LineExtractor::ExtractLines(const cv::Mat& frame, std::vector<KeyLine>* extrLines, cv::Mat* lineDescs)
-{
-    ExtractDetections(frame, extrLines);
-    ExtractDescriptors(frame, *extrLines, lineDescs);
-}
+#include "lbdmod/line_descriptor.hpp"
+
+typedef cv::line_descriptor::KeyLine KeyLine;
+
+class LineExtractor {
+public:
+
+    void ExtractLines(const cv::Mat& frame, std::vector<KeyLine>* extrLines, cv::Mat* lineDescs);
+
+    virtual void ExtractDescriptors(const cv::Mat& frame, std::vector<KeyLine>& keyLines, cv::Mat* lineDescs) = 0;
+    virtual void ExtractDetections(const cv::Mat& frame, std::vector<KeyLine>* extrLines) = 0;
+
+    virtual ~LineExtractor(){};
+
+};
+
+
+#endif //ORB_SLAM2_LINEEXTRACTOR_H

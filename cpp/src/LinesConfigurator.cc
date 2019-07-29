@@ -19,14 +19,14 @@
 */
 
 #include <opencv2/core/persistence.hpp>
-#include "LBDFloatLineMatcher.h"
-#include "LLDLineMatcher.h"
-#include "LinesConfigurator.h"
-#include "LBDFloatExtractor.h"
-#include "LLDExtractor.h"
+#include "../include/LBDFloatLineMatcher.h"
+#include "../include/LLDLineMatcher.h"
+#include "../include/LinesConfigurator.h"
+#include "../include/LBDFloatExtractor.h"
+#include "../include/LLDExtractor.h"
 
-#include "EmptyExtractor.h"
-#include "EmptyMatcher.h"
+#include "../include/EmptyExtractor.h"
+#include "../include/EmptyMatcher.h"
 
 StoredLineExtractor* LinesConfigurator::CreateLineExtractor(const std::string &strSettings, bool isLeft)
 {

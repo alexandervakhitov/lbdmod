@@ -19,7 +19,7 @@
 */
 
 #include <fstream>
-#include "StoredLineExtractor.h"
+#include "../include/StoredLineExtractor.h"
 
 StoredLineExtractor::StoredLineExtractor(const std::string &strDetectionsStorage, bool isLeft, bool isTest) :
         strDetectionsStorage(strDetectionsStorage), isLeft(isLeft), frameId(0), isTest(isTest)

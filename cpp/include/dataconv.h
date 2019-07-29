@@ -18,24 +18,14 @@
 * along with LLD-SLAM. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef ORB_SLAM2_LINEEXTRACTOR_H
-#define ORB_SLAM2_LINEEXTRACTOR_H
+#ifndef PYLBD_DATACONV_H
+#define PYLBD_DATACONV_H
 
-#include <opencv2/line_descriptor.hpp>
+#include "opencv2/line_descriptor.hpp"
 
-typedef cv::line_descriptor::KeyLine KeyLine;
+cv::Mat ConvertKeyLines2Mat(const std::vector<cv::line_descriptor::KeyLine>& detections);
+std::vector<cv::line_descriptor::KeyLine> ConvertMat2KeyLines(const cv::Mat& lines_data);
+cv::Mat ConvertMatches2Mat(const std::vector<cv::DMatch>& matchingVec);
+std::vector<cv::DMatch> ConvertMat2Matches(const cv::Mat& matchMat);
 
-class LineExtractor {
-public:
-
-    void ExtractLines(const cv::Mat& frame, std::vector<KeyLine>* extrLines, cv::Mat* lineDescs);
-
-    virtual void ExtractDescriptors(const cv::Mat& frame, std::vector<KeyLine>& keyLines, cv::Mat* lineDescs) = 0;
-    virtual void ExtractDetections(const cv::Mat& frame, std::vector<KeyLine>* extrLines) = 0;
-
-    virtual ~LineExtractor(){};
-
-};
-
-
-#endif //ORB_SLAM2_LINEEXTRACTOR_H
+#endif //PYLBD_DATACONV_H

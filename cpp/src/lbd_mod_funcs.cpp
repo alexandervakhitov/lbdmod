@@ -18,7 +18,7 @@
 * along with LLD-SLAM. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "lbd_mod_funcs.h"
+#include "../include/lbd_mod_funcs.h"
 
 void DetectEDLines(const cv::Mat& image, int n_octaves, double factor, std::vector<cv::line_descriptor::KeyLine>* detections_p)
 {

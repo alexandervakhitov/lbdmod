@@ -19,8 +19,8 @@
 */
 
 #include <iostream>
-#include "src/precomp.hpp"
-#include "lbd_mod_funcs.h"
+#include "cpp/src/precomp.hpp"
+#include "cpp/include/lbd_mod_funcs.h"
 
 int main()
 {

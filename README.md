@@ -10,7 +10,9 @@ To use, please
 
 3. Use (under Linux)
 ```
-cmake .
+mkdir build
+cd build
+cmake . ..
 make
 sudo make install
 ``` 
@@ -21,3 +23,8 @@ You can check that it works by running
 ./lbd_mod_test
 ``` 
 from the same folder. After the execution, the file 'test.png' with line detection visualization should appear in this folder.
+
+You can check the python interface by running
+```
+python ../python/lbdtest.py
+```

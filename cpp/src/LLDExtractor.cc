@@ -18,10 +18,15 @@
 * along with LLD-SLAM. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "LLDLineMatcher.h"
+#include <fstream>
+#include <opencv2/core/mat.hpp>
+#include "../include/LLDExtractor.h"
 
-LLDLineMatcher::LLDLineMatcher() {};
+LLDExtractor::LLDExtractor(const std::string &strDetections, const std::string &strDescriptors, bool isLeft, bool isTest) :
+        StoredLineExtractor(strDetections, isLeft, isTest), strDescriptorsStorage(strDescriptors)
+{}
 
-double LLDLineMatcher::MatchLineDescriptors(const cv::Mat &desc1, const cv::Mat &desc2) {
-    return 2.0 - desc1.dot(desc2);
+void LLDExtractor::ExtractDescriptors(const cv::Mat& frame, std::vector<KeyLine> &extrLines, cv::Mat *lineDescs)
+{
+    ReadTXTDescriptors(extrLines, strDescriptorsStorage, lineDescs);
 }
