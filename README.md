@@ -28,3 +28,6 @@ You can check the python interface by running
 ```
 python ../python/lbdtest.py
 ```
+
+In the python interface, we represent the set of lines as a OpenCV Mat instance. Each row has 17 entries corresponding to 
+line angle, number (class_id), octave, middlepoint's x and y coordinates, response, size, start point's x and y, end point's x and y, start point's x and y in octave, end point's x and y in octave, line length, number of pixels covered by the line (see https://github.com/alexandervakhitov/lbdmod/blob/master/cpp/src/dataconv.cpp). Similarly, line matches are stored.
