@@ -4,7 +4,15 @@ A line detection & description pipeline based on the EDLines detector and LBD de
 
 To use, please 
 
-1. Install dependencies (gcc, OpenCV, for the python wrapper also Python and boost)
+1. Install dependencies 
+
+  * GCC, OpenCV
+
+  * Python and boost-python. To obtain boost-python, build boost with 
+```
+./bootstrap --with-python=python2.7
+```
+or, if you need Python 3.X, customize the version in the command above
 
 2. Customize the CMakeLists.txt, part with Python paths (provide paths to the python and numpy libraries and headers)
 
