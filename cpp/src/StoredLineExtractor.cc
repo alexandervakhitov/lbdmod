@@ -75,7 +75,7 @@ void StoredLineExtractor::LoadDetectionsTrainDataset(int frameId)
     batchId = currFrameId;
     std::string linePath = strDetectionsStorage + "/" + std::to_string(batchId) + "/" + std::to_string(posInBatch)+"_l.png";
 //    std::cout << " reading dets from " << linePath << std::endl;
-    linesMat = cv::imread(linePath, CV_LOAD_IMAGE_UNCHANGED);
+    linesMat = cv::imread(linePath, cv::IMREAD_UNCHANGED);
 
     if (linesMat.empty())
     {
@@ -83,7 +83,7 @@ void StoredLineExtractor::LoadDetectionsTrainDataset(int frameId)
         batchId = currFrameId-maxTempDist;
         linePath = strDetectionsStorage + "/" + std::to_string(batchId) + "/" + std::to_string(posInBatch)+"_l.png";
 //        std::cout << " reading dets from " << linePath << std::endl;
-        linesMat = cv::imread(linePath, CV_LOAD_IMAGE_UNCHANGED);
+        linesMat = cv::imread(linePath, cv::IMREAD_UNCHANGED);
 
         if (linesMat.empty())
         {
@@ -91,7 +91,7 @@ void StoredLineExtractor::LoadDetectionsTrainDataset(int frameId)
             batchId = currFrameId+maxTempDist;
             linePath = strDetectionsStorage + "/" + std::to_string(batchId) + "/" + std::to_string(posInBatch)+"_l.png";
 //            std::cout << " reading dets from " << linePath << std::endl;
-            linesMat = cv::imread(linePath, CV_LOAD_IMAGE_UNCHANGED);
+            linesMat = cv::imread(linePath, cv::IMREAD_UNCHANGED);
         }
     }
 }
@@ -107,7 +107,7 @@ void StoredLineExtractor::LoadDetectionsTestDataset(int frameId)
     }
     std::string linePath = strDetectionsStorage + "/" + std::to_string(frameId) + suff + ".png";
     std::cout << " reading dets from " << linePath << std::endl;
-    linesMat = cv::imread(linePath, CV_LOAD_IMAGE_UNCHANGED);
+    linesMat = cv::imread(linePath, cv::IMREAD_UNCHANGED);
 //    std::cout << "dets read " << linesMat.cols << std::endl;
 }
 

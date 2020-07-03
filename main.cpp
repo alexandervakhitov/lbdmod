@@ -58,7 +58,7 @@ int main()
     double dt = (t1 - t0) / cv::getTickFrequency();
 
     cv::Mat debugDetector, imageColor;
-    cv::cvtColor(image, imageColor, CV_GRAY2BGR);
+    cv::cvtColor(image, imageColor, cv::COLOR_GRAY2BGR);
     cv::line_descriptor::drawKeylines(imageColor, lines, debugDetector);
 
     if (is_highgui)
@@ -75,7 +75,7 @@ int main()
     }
 
     cv::Mat debugDetector2, imageColor2;
-    cv::cvtColor(image2, imageColor2, CV_GRAY2BGR);
+    cv::cvtColor(image2, imageColor2, cv::COLOR_GRAY2BGR);
     cv::line_descriptor::drawKeylines(imageColor2, lines2, debugDetector2);
 
     if (is_highgui)

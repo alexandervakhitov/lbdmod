@@ -40,7 +40,7 @@ void DecodeFloatDesc(cv::Mat* desc_float_p, const cv::Mat& desc_to_read, int col
 
 void ReadBinDescriptors(const std::string& descPath, cv::Mat* lineDescs)
 {
-    cv::Mat descs = cv::imread(descPath, CV_LOAD_IMAGE_UNCHANGED);
+    cv::Mat descs = cv::imread(descPath, cv::IMREAD_UNCHANGED);
     cv::Mat descs_dec(descs.cols, descs.rows, CV_64FC1);
     for (int i = 0; i < descs.cols; i++)
     {
